@@ -18,24 +18,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip python3-venv autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev build-essential
+          sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev build-essential
 
-      - name: Setup Python
+      - name: Install Buildozer
         run: |
-          python3 -m venv .venv
-          .venv/bin/pip install --upgrade pip setuptools wheel
-          .venv/bin/pip install buildozer cython==0.29.36
+          python3 -m pip install --user --upgrade pip setuptools wheel
+          python3 -m pip install --user buildozer cython==0.29.36
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
-      
+      - name: Check Cython and Buildozer
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          cython --version
+          buildozer --version
+
       - name: Build APK
         run: |
-          export PATH="$PWD/.venv/bin:$PATH"
-          cython --version
+          export PATH="$HOME/.local/bin:$PATH"
+          set +o pipefail
           yes | buildozer -v android debug
-
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
