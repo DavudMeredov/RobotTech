@@ -5,7 +5,7 @@ package.domain = org.lunapath
 source.dir = .
 source.include_exts = py,png,html
 version = 0.1
-requirements = python3,kivy,flask,werkzeug,jinja2,markupsafe,itsdangerous,click,blinker,pyjnius,android
+requirements = python3,kivy,flask,werkzeug,jinja2,markupsafe,itsdangerous,click,blinker,pyjnius
 orientation = portrait
 fullscreen = 0
 
